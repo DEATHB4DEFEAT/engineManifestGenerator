@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 /// </summary>
 public static class ManifestGenerator
 {
-	public const string MANIFEST_FILEPATH = "manifest.json";
+	public const string MANIFEST_FILEPATH = "/path/to/engine/manifest.json";
 	public const bool ALLOW_NEW_FILE = true; // enable for first run
 	public const string BUILDS_PATH = "/path/to/engine/builds/";
 	public const string BUILDS_URL = "https://example.com/builds/";
@@ -137,3 +137,4 @@ public static class ManifestGenerator
 		File.WriteAllBytes("engine.pub", key.Export(KeyBlobFormat.PkixPublicKeyText));
 	}
 }
+
