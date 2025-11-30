@@ -11,9 +11,9 @@ public static class ManifestGenerator
 {
 	public const string MANIFEST_FILEPATH = "manifest.json";
 	public const bool ALLOW_NEW_FILE = true; // enable for first run
-	public const string BUILDS_PATH = "/home/ss14/ssmvEngine/release/";
-	public const string BUILDS_URL = "https://cdn.spacestationmultiverse.com/ssmv-engine-builds/";
-	private const string PRIVATE_KEY_PATH = "ssmvEngine.key";
+	public const string BUILDS_PATH = "/path/to/engine/builds/";
+	public const string BUILDS_URL = "https://example.com/builds/";
+	private const string PRIVATE_KEY_PATH = "engine.key";
 
 	public static void Main(string[] args)
 	{
@@ -105,6 +105,12 @@ public static class ManifestGenerator
 
 	private static string GenerateSignature(string filePath)
 	{
+		if (!File.Exists(PRIVATE_KEY_PATH))
+		{
+			Console.WriteLine("Private key not found, generating new key pair...");
+			GenerateSigningKeyPair();
+		}
+
 		var privateKeyFile = File.ReadAllBytes(PRIVATE_KEY_PATH);
 		var key = Key.Import(SignatureAlgorithm.Ed25519, privateKeyFile, KeyBlobFormat.PkixPrivateKeyText);
 
@@ -116,7 +122,6 @@ public static class ManifestGenerator
 	/// <summary>
 	/// First-time setup of key signing pair for engine build signing
 	/// </summary>
-	/*
 	private static void GenerateSigningKeyPair()
 	{
 		// select the Ed25519 signature algorithm
@@ -128,8 +133,7 @@ public static class ManifestGenerator
 		using var key = Key.Create(algorithm, policyAllowExport);
 
 		// generate some data to be signed
-		File.WriteAllBytes("ssmvEngine.key", key.Export(KeyBlobFormat.PkixPrivateKeyText));
-		File.WriteAllBytes("ssmvEngine.public", key.Export(KeyBlobFormat.PkixPublicKeyText));
+		File.WriteAllBytes("engine.key", key.Export(KeyBlobFormat.PkixPrivateKeyText));
+		File.WriteAllBytes("engine.pub", key.Export(KeyBlobFormat.PkixPublicKeyText));
 	}
-	*/
 }
